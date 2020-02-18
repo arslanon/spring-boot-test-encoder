@@ -11,4 +11,5 @@ public class EncodingResponse {
 
     private String text;
     private String encoded;
+    private String base64;
 }

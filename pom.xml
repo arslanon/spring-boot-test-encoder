@@ -10,12 +10,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.vincentleom.utils</groupId>
-    <artifactId>text-encoder</artifactId>
+    <groupId>com.onura.utils</groupId>
+    <artifactId>text-generator-encoder</artifactId>
 
     <version>0.0.1-SNAPSHOT</version>
-    <name>text-encoder</name>
-    <description>Spring Boot Bcrypt Generator</description>
+    <name>text-generator-encoder</name>
+    <description>Text Generator and Bcrypt Encoder</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -35,6 +35,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>

@@ -1,5 +1,9 @@
 package com.vincentleom.utils.service;
 
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EncodingService {
 
-    final private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public EncodingService(PasswordEncoder passwordEncoder) {
@@ -15,13 +19,13 @@ public class EncodingService {
     }
 
     /**
-     * Encode a text with bcrypt
+     * Encode a password as bcrypt
      *
-     * @param s String - text
-     * @return String - encoded text via Bcrypt
+     * @param password String - password
+     * @return String - encoded password via Bcrypt
      */
-    public String encode(String s) {
-        return this.passwordEncoder.encode(s);
+    public String encode(String password) {
+        return this.passwordEncoder.encode(password);
     }
 
     /**
@@ -34,7 +38,7 @@ public class EncodingService {
     public String generateText(int length) {
 
         // chose a Character random from this String
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        String AlphaNumericString =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
                 + "abcdefghijklmnopqrstuvxyz";
 
@@ -52,5 +56,41 @@ public class EncodingService {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Generate password with given length parameter
+     * -link https://www.baeldung.com/java-generate-secure-password
+     *
+     * @param length int - default is 32
+     * @return String -
+     */
+    public String generatePassayPassword(int length) {
+        PasswordGenerator gen = new PasswordGenerator();
+        CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+        CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+        lowerCaseRule.setNumberOfCharacters(2);
+
+        CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+        CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+        upperCaseRule.setNumberOfCharacters(2);
+
+        CharacterData digitChars = EnglishCharacterData.Digit;
+        CharacterRule digitRule = new CharacterRule(digitChars);
+        digitRule.setNumberOfCharacters(1);
+
+        CharacterData specialChars = new CharacterData() {
+            public String getErrorCode() {
+                return "100";
+            }
+
+            public String getCharacters() {
+                return "!#$%^&*_+";
+            }
+        };
+        CharacterRule splCharRule = new CharacterRule(specialChars);
+        splCharRule.setNumberOfCharacters(2);
+
+        return gen.generatePassword(length, splCharRule, lowerCaseRule, upperCaseRule, digitRule);
     }
 }
